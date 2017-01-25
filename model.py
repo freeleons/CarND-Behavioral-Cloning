@@ -15,6 +15,12 @@ with open(training_file, mode='rb') as f:
 X_train, y_train = train['X_train'], train['y_train']
 X_test, y_test = train['X_test'], train['y_test']
 
+def train_data_generator(X_train_arg, y_train_arg):
+    for i in range(len(X_train_arg)):
+        # yield ({'input': X_train_arg[i]}, {'output': y_train_arg[i]})
+        yield (X_train_arg[i], y_train_arg[i])
+
+
 num_of_train = len(X_train)
 num_of_angle = len(y_train)
 num_of_test = len(X_test)
@@ -71,7 +77,7 @@ except:
 	# The first layer will turn 1 channel into 16 channels
 	model.add(Convolution2D(nb_filters1, kernel_size[0], kernel_size[1],
 	                        border_mode='valid',
-	                        input_shape=input_shape))
+	                        input_shape=(input_shape)))
 	# Applying ReLU
 	model.add(Activation('relu'))
 	# The second conv layer will convert 16 channels into 8 channels
@@ -120,9 +126,11 @@ model.compile(loss='mean_squared_error',
               metrics=['accuracy'])
 
 ### Model training
-history = model.fit(X_train, y_train,
-                    batch_size=batch_size, nb_epoch=nb_epoch,
-                    verbose=1, validation_split = 0.1)
+# history = model.fit(X_train, y_train,
+                    # batch_size=batch_size, nb_epoch=nb_epoch,
+                    # verbose=1, validation_split = 0.1)
+
+history = model.fit_generator(train_data_generator(X_train, y_train), samples_per_epoch = len(X_train), nb_epoch=nb_epoch, verbose=1)
 score = model.evaluate(X_test, y_test, verbose=0)
 print('Test score:', score[0])
 print('Test accuracy:', score[1])
