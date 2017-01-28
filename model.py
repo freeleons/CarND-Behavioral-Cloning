@@ -18,7 +18,7 @@ X_test, y_test = train['X_test'], train['y_test']
 def train_data_generator(X_train_arg, y_train_arg):
     for i in range(len(X_train_arg)):
         # yield ({'input': X_train_arg[i]}, {'output': y_train_arg[i]})
-        yield (X_train_arg[i], y_train_arg[i])
+        yield (X_train_arg[i].reshape([-1,160,320,3]), y_train_arg[i].reshape([-1,160,320,3]))
 
 
 num_of_train = len(X_train)
