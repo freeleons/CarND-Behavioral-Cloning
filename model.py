@@ -15,10 +15,15 @@ with open(training_file, mode='rb') as f:
 X_train, y_train = train['X_train'], train['y_train']
 X_test, y_test = train['X_test'], train['y_test']
 
+# def train_data_generator(X_train_arg, y_train_arg):
+#     for i in range(len(X_train_arg)):
+#         # yield ({'input': X_train_arg[i]}, {'output': y_train_arg[i]})
+#         yield (np.array([X_train_arg[i]]), np.array([y_train_arg[i]]))
+
 def train_data_generator(X_train_arg, y_train_arg):
-    for i in range(len(X_train_arg)):
-        # yield ({'input': X_train_arg[i]}, {'output': y_train_arg[i]})
-        yield (np.array([X_train_arg[i]]), np.array([y_train_arg[i]]))
+    while True:
+        for i in range(len(X_train_arg)):
+            yield (np.array([X_train_arg[i]]), np.array([y_train_arg[i]]))
 
 
 num_of_train = len(X_train)
