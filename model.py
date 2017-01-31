@@ -23,7 +23,7 @@ X_test, y_test = train['X_test'], train['y_test']
 def train_data_generator(X_train_arg, y_train_arg):
     while True:
         for i in range(len(X_train_arg)):
-            yield (np.array([X_train_arg[i]]), np.array([y_train_arg[i]]))
+            yield (np.array([X_train_arg[i]]).reshape([-1,160,320,3]), np.array([y_train_arg[i]]))
 
 
 num_of_train = len(X_train)
@@ -43,7 +43,7 @@ print(input_shape, 'input shape')
 
 batch_size = 64 # The lower the better
 nb_classes = 1 # The output is a single digit: a steering angle
-nb_epoch = 10 # The higher the better
+nb_epoch = 1 # The higher the better
 
 # import model and wieghts if exists
 try:
@@ -136,7 +136,7 @@ model.compile(loss='mean_squared_error',
                     # verbose=1, validation_split = 0.1)
 
 history = model.fit_generator(train_data_generator(X_train, y_train), samples_per_epoch = len(X_train), nb_epoch=nb_epoch, verbose=1)
-score = model.evaluate(X_test, y_test, verbose=0)
+score = model.evaluate(np.array([X_test]).reshape([-1,160,320,3]), np.array([y_test]).reshape(-1, 1), verbose=0)
 print('Test score:', score[0])
 print('Test accuracy:', score[1])
 
