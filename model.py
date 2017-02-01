@@ -5,6 +5,10 @@ from keras.models import Sequential, model_from_json
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Convolution2D, MaxPooling2D
 from keras.optimizers import SGD, Adam, RMSprop
+from keras.regularizers import l2
+from keras.layers.core import SpatialDropout2D, Lambda
+from keras.layers.normalization import BatchNormalization
+from keras.layers.convolutional import Convolution2D, Cropping2D
 
 
 training_file = './data.pickle'
@@ -43,7 +47,12 @@ print(input_shape, 'input shape')
 
 batch_size = 64 # The lower the better
 nb_classes = 1 # The output is a single digit: a steering angle
-nb_epoch = 1 # The higher the better
+nb_epoch = 5 # The higher the better
+
+def resize(X):
+    # import tensorflow here so module is available when recreating pipeline from saved json.
+    import tensorflow
+    return tensorflow.image.resize_images(X, (40, 160))
 
 # import model and wieghts if exists
 try:
@@ -76,50 +85,42 @@ except:
 	kernel_size = (3, 3)
 
 	# Initiating the model
-	model = Sequential()
-
-	# Starting with the convolutional layer
-	# The first layer will turn 1 channel into 16 channels
-	model.add(Convolution2D(nb_filters1, kernel_size[0], kernel_size[1],
-	                        border_mode='valid',
-	                        input_shape=(input_shape)))
-	# Applying ReLU
-	model.add(Activation('relu'))
-	# The second conv layer will convert 16 channels into 8 channels
-	model.add(Convolution2D(nb_filters2, kernel_size[0], kernel_size[1]))
-	# Applying ReLU
-	model.add(Activation('relu'))
-	# The second conv layer will convert 8 channels into 4 channels
-	model.add(Convolution2D(nb_filters3, kernel_size[0], kernel_size[1]))
-	# Applying ReLU
-	model.add(Activation('relu'))
-	# The second conv layer will convert 4 channels into 2 channels
-	model.add(Convolution2D(nb_filters4, kernel_size[0], kernel_size[1]))
-	# Applying ReLU
-	model.add(Activation('relu'))
-	# Apply Max Pooling for each 2 x 2 pixels
-	model.add(MaxPooling2D(pool_size=pool_size))
-	# Apply dropout of 25%
-	model.add(Dropout(0.25))
-
-	# Flatten the matrix. The input has size of 360
-	model.add(Flatten())
-	# Input 360 Output 16
-	model.add(Dense(16))
-	# Applying ReLU
-	model.add(Activation('relu'))
-	# Input 16 Output 16
-	model.add(Dense(16))
-	# Applying ReLU
-	model.add(Activation('relu'))
-	# Input 16 Output 16
-	model.add(Dense(16))
-	# Applying ReLU
-	model.add(Activation('relu'))
-	# Apply dropout of 50%
-	model.add(Dropout(0.5))
-	# Input 16 Output 1
-	model.add(Dense(nb_classes))
+	model = Sequential([
+    # Preprocess
+    # Crop above horizon and car hood to remove uneeded information
+    # Resize images to improve performance
+    # Normalize to keep weight values small with zero mean, improving numerical stability.
+    Cropping2D(cropping=((60, 20), (0, 0)), input_shape=(160, 320, 3)),
+    Lambda(resize),
+    BatchNormalization(axis=1),
+    # Conv 5x5
+    Convolution2D(24, 5, 5, border_mode='same', activation='elu'),
+    MaxPooling2D(border_mode='same'),
+    SpatialDropout2D(0.2),
+    # Conv 5x5
+    Convolution2D(36, 5, 5, border_mode='same', activation='elu'),
+    MaxPooling2D(border_mode='same'),
+    SpatialDropout2D(0.2),
+    # Conv 5x5
+    Convolution2D(48, 5, 5, border_mode='same', activation='elu'),
+    MaxPooling2D(border_mode='same'),
+    SpatialDropout2D(0.2),
+    # Conv 3x3
+    Convolution2D(64, 3, 3, border_mode='same', activation='elu'),
+    MaxPooling2D(border_mode='same'),
+    SpatialDropout2D(0.2),
+    # Conv 3x3
+    Convolution2D(64, 3, 3, border_mode='same', activation='elu'),
+    MaxPooling2D(border_mode='same'),
+    SpatialDropout2D(0.2),
+    # Flatten
+    Flatten(),
+    # Fully Connected
+    Dense(100, activation='elu', W_regularizer=l2(1e-6)),
+    Dense(50, activation='elu', W_regularizer=l2(1e-6)),
+    Dense(10, activation='elu', W_regularizer=l2(1e-6)),
+    Dense(1)
+    ])
 
 # Print out summary of the model
 model.summary()
