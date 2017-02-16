@@ -38,7 +38,7 @@ I have used the [Sample Training Data](https://d17h27t6h515a5.cloudfront.net/top
 
 I have tried lots of learning rates like 0.1, 0.01, 0.001, 0.0001, 0.00001 and so on. I found the learning rate 0.0003 is the best for the model because the driving behavior is the best I have seen. However, when I tried to run the model on the simulator, it cannot last for a lap. The car will run out of the road eventually. 
 
-#####I have tried so many times to adjust the learning rate. I can not make meet the specifications that "No tire may leave the drivable portion of the track surface", Could you give me some suggestioins to guide me to meet this specification?
+#####I have tried so many times to adjust the learning rate. I can not make meet the specifications that "No tire may leave the drivable portion of the track surface", Could you give me some suggestions to guide me to meet this specification?
 
 
 
