@@ -34,7 +34,11 @@ Trainable params: 201,099
 Non-trainable params: 80
 ____________________________________________________________________________________________________
 
-However, when I tried to run the model on the simulator, it cannot last for a lap. I will run out of the road. I have tried 
+I have used the [Sample Training Data](https://d17h27t6h515a5.cloudfront.net/topher/2016/December/584f6edd_data/data.zip) from Udacity to train the model.
+
+I have tried lots of learning rates like 0.1, 0.01, 0.001, 0.0001, 0.00001 and so on. I found the learning rate 0.0003 is the best for the model because the driving behavior is the best I have seen. However, when I tried to run the model on the simulator, it cannot last for a lap. The car will run out of the road eventually. I can not make meet the specifications that "No tire may leave the drivable portion of the track surface", Could you give me some suggestioins to guide me to meet this specification?
+
+
 
 
 

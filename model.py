@@ -13,15 +13,8 @@ from keras.layers.normalization import BatchNormalization
 from keras.layers.convolutional import Convolution2D, Cropping2D
 
 
-
-
 driving_log = pd.read_csv('driving_log.csv', index_col=False)
 driving_log.columns = ['Center', 'Left', 'Right', 'Steering', 'Throttle', 'Break', 'Speed']
-
-# 2. Prepare Data for Generator
-# X_train = np.array([]).reshape([-1,160,320,3])
-# X_train = np.array([])
-# y_train = np.array([])
 
 X_train = []
 y_train = []
