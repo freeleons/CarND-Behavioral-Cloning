@@ -1,7 +1,7 @@
 # CarND-Behavioral-Cloning Project: Use Deep Learning to Clone Driving Behavior
 At first, I really do not have any clues about what's the deep neural network architecture look alike to handle such a problem. It is a regression problem and not a classification problem. So I asked my mentor about the architecture of the neural network and my mentor recommended me a paper called ["End to End Learning for Self-Driving Cars"](https://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf) 
 
-So I used their architecture to build the network. Here is what is look alike:
+So I used their architecture to build the network. Here is what is look alike and this picture is from the paper, End to End Learning for Self-Driving Cars:
 ![alt text](Architecture.png "Architecture")
 
 |Layer (type) |                    Output Shape    |      Param# 	|   Connected to|
