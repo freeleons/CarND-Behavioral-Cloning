@@ -38,7 +38,24 @@ I have used the [Sample Training Data](https://d17h27t6h515a5.cloudfront.net/top
 
 I have tried lots of learning rates like 0.1, 0.01, 0.001, 0.0001, 0.00001 and so on. I found the learning rate 0.0003 is the best for the model because the driving behavior is the best I have seen. However, when I tried to run the model on the simulator, it cannot last for a lap. The car will run out of the road eventually. 
 
-#####I have tried so many times to adjust the learning rate. I can not make meet the specifications that "No tire may leave the drivable portion of the track surface", Could you give me some suggestions to guide me to meet this specification?
+###Please discuss how did you decide the number and type of layers.
+I can not decide how many number and types of layers, so I just followed the paper called, End to End Learning for Self-Driving Cars. I used their achitecture.
+
+###Please discuss how would you evaluate the model.
+I evaluate the model by using the loss durning the training of the model and I evaluate it by use the automous driving mode in the simulator to test drive the car.
+
+###Please discuss why this model is suitable for this question.
+I learned it from the paper, End to End Learning for Self-Driving Cars, that this model is suitable for this question.
+
+###Please discuss what problems you have met.
+After I trained the model and get model.json and model.h5, I use them to drive the car in the simulator, the car will always drive off the road. I have tried so many times with different learning rates. I still can not keep the car on the road for more than a lap. The best case is the car keep on the road for one lap.
+
+###Please discuss what strategy have you been adopted.
+I have no strategy for this project. I felt the learning curve for this project is too big.
+
+
+I have tried so many times to adjust the learning rate. I can not make meet the specifications that "No tire may leave the drivable portion of the track surface", Could you give me some suggestions to guide me to meet this specification?
+
 
 
 
